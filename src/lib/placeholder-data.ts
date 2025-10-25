@@ -136,3 +136,70 @@ export const academicPeriods: AcademicPeriod[] = [
   { id: 'PER003', name: 'Verano 2024', startDate: new Date(2024, 0, 8), endDate: new Date(2024, 0, 26), status: 'Cerrado' },
   { id: 'PER004', name: '2-2023', startDate: new Date(2023, 7, 1), endDate: new Date(2023, 11, 20), status: 'Cerrado' },
 ];
+
+export type ScheduleSlot = {
+  day: 'Lunes' | 'Martes' | 'Miércoles' | 'Jueves' | 'Viernes' | 'Sábado';
+  time: string;
+  classroom: string;
+}
+
+export type CourseOffering = {
+  id: string;
+  subjectCode: string;
+  group: string;
+  teacherCode: string;
+  schedule: ScheduleSlot[];
+};
+
+export const courseOfferings: CourseOffering[] = [
+  {
+    id: 'OFF001',
+    subjectCode: 'INF111',
+    group: 'SA',
+    teacherCode: 'FFMO',
+    schedule: [
+      { day: 'Lunes', time: '07:00-09:15', classroom: '225-LC1' },
+      { day: 'Miércoles', time: '07:00-09:15', classroom: '225-LC1' },
+    ],
+  },
+  {
+    id: 'OFF002',
+    subjectCode: 'INF111',
+    group: 'SB',
+    teacherCode: 'CMJR',
+    schedule: [
+      { day: 'Lunes', time: '09:15-11:30', classroom: '225-LC1' },
+      { day: 'Miércoles', time: '09:15-11:30', classroom: '225-LC1' },
+    ],
+  },
+  {
+    id: 'OFF003',
+    subjectCode: 'INF121',
+    group: 'SC',
+    teacherCode: 'CUJM',
+    schedule: [
+      { day: 'Martes', time: '14:00-16:15', classroom: '225-A1' },
+      { day: 'Jueves', time: '14:00-16:15', classroom: '225-A1' },
+    ],
+  },
+   {
+    id: 'OFF004',
+    subjectCode: 'MAT101',
+    group: 'Z1',
+    teacherCode: 'GPED',
+    schedule: [
+      { day: 'Lunes', time: '08:00-10:15', classroom: '210-A5' },
+      { day: 'Viernes', time: '08:00-10:15', classroom: '210-A5' },
+    ],
+  },
+   {
+    id: 'OFF005',
+    subjectCode: 'INF312',
+    group: 'SA',
+    teacherCode: 'MDVF',
+    schedule: [
+      { day: 'Martes', time: '18:00-20:15', classroom: '225-LC2' },
+      { day: 'Jueves', time: '18:00-20:15', classroom: '225-LC2' },
+    ],
+  }
+];
