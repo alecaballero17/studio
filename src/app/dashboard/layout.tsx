@@ -165,18 +165,6 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { user, loading } = useUser();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
-    }
-  }, [user, loading, router]);
-
-  if (loading || !user) {
-    return <div className="flex min-h-screen w-full items-center justify-center bg-background"><p>Cargando...</p></div>;
-  }
 
   return (
     <SidebarProvider>
