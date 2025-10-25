@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { collection, addDoc, deleteDoc, doc } from "firebase/firestore"
 import { MoreHorizontal, PlusCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -37,18 +38,31 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
-import { faculties as placeholderFaculties } from "@/lib/placeholder-data"
+import { useCollection, useFirestore } from "@/firebase"
+import { Skeleton } from "@/components/ui/skeleton"
+
+// Definiendo el tipo para el documento de facultad
+type Faculty = {
+  id: string;
+  name: string;
+  code: string;
+};
 
 export default function FacultadesPage() {
   const { toast } = useToast()
-  const [faculties, setFaculties] = React.useState(placeholderFaculties);
+  const firestore = useFirestore()
+  
+  // Hook para obtener datos de la colección 'faculties'
+  const facultiesCollection = firestore ? collection(firestore, "faculties") : null
+  const { data: faculties, loading, error } = useCollection<Faculty>(facultiesCollection)
+
   const [sheetOpen, setSheetOpen] = React.useState(false)
   const [newFacultyName, setNewFacultyName] = React.useState("")
   const [newFacultyCode, setNewFacultyCode] = React.useState("")
 
-  const handleAddFaculty = (e: React.FormEvent) => {
+  const handleAddFaculty = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!newFacultyName || !newFacultyCode) {
+    if (!newFacultyName || !newFacultyCode || !firestore) {
       toast({
         variant: "destructive",
         title: "Campos incompletos",
@@ -57,32 +71,44 @@ export default function FacultadesPage() {
       return
     }
     
-    // This is a mock implementation
-    const newFaculty = {
-        id: `FAC${(faculties.length + 1).toString().padStart(3, '0')}`,
-        name: newFacultyName,
-        code: newFacultyCode,
-    };
+    try {
+      const facultiesRef = collection(firestore, 'faculties');
+      await addDoc(facultiesRef, { name: newFacultyName, code: newFacultyCode });
 
-    setFaculties([...faculties, newFaculty]);
-    
-    toast({
-      title: "Facultad Agregada (Demo)",
-      description: "La nueva facultad se ha añadido a la lista local.",
-    })
+      toast({
+        title: "Facultad Agregada",
+        description: "La nueva facultad se ha guardado en la base de datos.",
+      })
 
-    setNewFacultyName("")
-    setNewFacultyCode("")
-    setSheetOpen(false)
+      setNewFacultyName("")
+      setNewFacultyCode("")
+      setSheetOpen(false)
+    } catch (error: any) {
+       toast({
+        variant: "destructive",
+        title: "Error al guardar",
+        description: error.message || "No se pudo agregar la facultad.",
+      })
+    }
   }
 
-  const handleDeleteFaculty = (id: string) => {
-     if (confirm("¿Está seguro de que desea eliminar esta facultad? (Demo)")) {
-        setFaculties(faculties.filter(f => f.id !== id));
-        toast({
-            title: "Facultad Eliminada (Demo)",
-            description: "La facultad se ha eliminado de la lista local.",
-        })
+  const handleDeleteFaculty = async (id: string) => {
+     if (confirm("¿Está seguro de que desea eliminar esta facultad?")) {
+        if (!firestore) return;
+        try {
+            const facultyDocRef = doc(firestore, 'faculties', id);
+            await deleteDoc(facultyDocRef);
+            toast({
+                title: "Facultad Eliminada",
+                description: "La facultad se ha eliminado de la base de datos.",
+            })
+        } catch (error: any) {
+             toast({
+                variant: "destructive",
+                title: "Error al eliminar",
+                description: error.message || "No se pudo eliminar la facultad.",
+            })
+        }
     }
   }
 
@@ -98,7 +124,7 @@ export default function FacultadesPage() {
         <CardHeader>
           <CardTitle>Facultades Registradas</CardTitle>
           <CardDescription>
-            Listado de todas las facultades de la universidad.
+            Listado de todas las facultades de la universidad desde Firestore.
           </CardDescription>
            <div className="flex justify-end">
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
@@ -156,27 +182,54 @@ export default function FacultadesPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {faculties.map(faculty => (
-                <TableRow key={faculty.id}>
-                  <TableCell className="font-medium">{faculty.name}</TableCell>
-                  <TableCell>{faculty.code}</TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button aria-haspopup="true" size="icon" variant="ghost">
-                          <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Toggle menu</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                        <DropdownMenuItem disabled>Editar</DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive" onClick={() => handleDeleteFaculty(faculty.id)}>Eliminar</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+              {loading ? (
+                <>
+                  <TableRow>
+                    <TableCell><Skeleton className="h-5 w-3/4" /></TableCell>
+                    <TableCell><Skeleton className="h-5 w-1/2" /></TableCell>
+                    <TableCell><Skeleton className="h-8 w-8 rounded-full" /></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><Skeleton className="h-5 w-full" /></TableCell>
+                    <TableCell><Skeleton className="h-5 w-1/3" /></TableCell>
+                    <TableCell><Skeleton className="h-8 w-8 rounded-full" /></TableCell>
+                  </TableRow>
+                </>
+              ) : error ? (
+                <TableRow>
+                  <TableCell colSpan={3} className="text-center text-destructive">
+                    Error al cargar datos: {error.message}
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : faculties?.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={3} className="text-center text-muted-foreground">
+                    No hay facultades registradas. ¡Agregue una!
+                  </TableCell>
+                </TableRow>
+              ) : (
+                faculties?.map(faculty => (
+                  <TableRow key={faculty.id}>
+                    <TableCell className="font-medium">{faculty.name}</TableCell>
+                    <TableCell>{faculty.code}</TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button aria-haspopup="true" size="icon" variant="ghost">
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">Toggle menu</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                          <DropdownMenuItem disabled>Editar</DropdownMenuItem>
+                          <DropdownMenuItem className="text-destructive" onClick={() => handleDeleteFaculty(faculty.id)}>Eliminar</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </CardContent>
