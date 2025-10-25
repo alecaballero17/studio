@@ -147,6 +147,58 @@
         }
       },
       "required": ["name", "startDate", "endDate", "status"]
+    },
+    "scheduleSlot": {
+      "title": "Schedule Slot",
+      "description": "Represents a single time slot in a schedule.",
+      "type": "object",
+      "properties": {
+        "day": {
+          "type": "string",
+          "enum": ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+          "description": "The day of the week for the class."
+        },
+        "time": {
+          "type": "string",
+          "description": "The time range for the class (e.g., '07:00-09:15')."
+        },
+        "classroom": {
+          "type": "string",
+          "description": "The code of the classroom where the class is held."
+        }
+      },
+      "required": ["day", "time", "classroom"]
+    },
+    "courseOffering": {
+      "title": "Course Offering",
+      "description": "Represents a specific course group offered in an academic period.",
+      "type": "object",
+      "properties": {
+        "subjectCode": {
+          "type": "string",
+          "description": "The code of the subject being offered."
+        },
+        "group": {
+          "type": "string",
+          "description": "The group identifier for the course (e.g., 'SA')."
+        },
+        "teacherCode": {
+          "type": "string",
+          "description": "The code of the assigned teacher."
+        },
+        "academicPeriodId": {
+          "type": "string",
+          "description": "The ID of the academic period this course belongs to."
+        },
+        "schedule": {
+          "type": "array",
+          "items": {
+            "$ref": "#/entities/scheduleSlot"
+          },
+          "description": "The schedule for this course offering."
+        }
+      },
+      "required": ["subjectCode", "group", "teacherCode", "academicPeriodId", "schedule"]
     }
   },
   "auth": {
@@ -188,6 +240,12 @@
         "$ref": "#/entities/academicPeriod"
       },
       "description": "Collection of academic periods."
+    },
+    "/course-offerings/{offeringId}": {
+      "schema": {
+        "$ref": "#/entities/courseOffering"
+      },
+      "description": "Collection of all offered courses for different academic periods."
     }
   }
 }
