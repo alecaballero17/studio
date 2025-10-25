@@ -35,6 +35,30 @@
         }
       },
       "required": ["name", "code", "facultyCode"]
+    },
+    "subject": {
+      "title": "Subject",
+      "description": "Represents an academic subject or course.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the subject."
+        },
+        "code": {
+          "type": "string",
+          "description": "The unique code for the subject (e.g., 'INF-111')."
+        },
+        "level": {
+            "type": "number",
+            "description": "The academic level or semester for the subject."
+        },
+        "credits": {
+            "type": "number",
+            "description": "The number of credits the subject is worth."
+        }
+      },
+      "required": ["name", "code", "level", "credits"]
     }
   },
   "auth": {
@@ -52,6 +76,12 @@
         "$ref": "#/entities/career"
       },
       "description": "Collection of academic careers."
+    },
+    "/subjects/{subjectId}": {
+      "schema": {
+        "$ref": "#/entities/subject"
+      },
+      "description": "Collection of academic subjects."
     }
   }
 }
