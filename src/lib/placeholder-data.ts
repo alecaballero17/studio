@@ -203,3 +203,70 @@ export const courseOfferings: CourseOffering[] = [
     ],
   }
 ];
+
+
+export type Permission = {
+  id: string;
+  label: string;
+  category: string;
+};
+
+export const allPermissions: Permission[] = [
+  // Gestión de Usuarios
+  { id: 'users.create', label: 'Crear usuarios', category: 'Usuarios' },
+  { id: 'users.read', label: 'Ver usuarios', category: 'Usuarios' },
+  { id: 'users.update', label: 'Editar usuarios', category: 'Usuarios' },
+  { id: 'users.delete', label: 'Eliminar usuarios', category: 'Usuarios' },
+  // Gestión de Roles
+  { id: 'roles.create', label: 'Crear roles', category: 'Roles' },
+  { id: 'roles.read', label: 'Ver roles', category: 'Roles' },
+  { id: 'roles.update', label: 'Asignar/editar permisos', category: 'Roles' },
+  { id: 'roles.delete', label: 'Eliminar roles', category: 'Roles' },
+  // Gestión Académica
+  { id: 'faculties.read', label: 'Ver facultades', category: 'Académico' },
+  { id: 'faculties.update', label: 'Crear/Editar facultades', category: 'Académico' },
+  { id: 'careers.read', label: 'Ver carreras', category: 'Académico' },
+  { id: 'careers.update', label: 'Crear/Editar carreras', category: 'Académico' },
+  { id: 'subjects.read', label: 'Ver asignaturas', category: 'Académico' },
+  { id: 'subjects.update', label: 'Crear/Editar asignaturas', category: 'Académico' },
+  { id: 'periods.read', label: 'Ver períodos académicos', category: 'Académico' },
+  { id: 'periods.update', label: 'Crear/Editar períodos', category: 'Académico' },
+  // Gestión de Horarios
+  { id: 'schedules.read', label: 'Ver horarios', category: 'Horarios' },
+  { id: 'schedules.update', label: 'Crear/Editar horarios', category: 'Horarios' },
+  { id: 'schedules.assign', label: 'Asignar horarios a docentes', category: 'Horarios' },
+];
+
+export type Role = {
+    id: string;
+    name: 'Administrador' | 'Docente' | 'Estudiante';
+    description: string;
+    permissions: string[]; // array of permission ids
+}
+
+export const roles: Role[] = [
+    {
+        id: 'admin',
+        name: 'Administrador',
+        description: 'Acceso total a todas las funcionalidades del sistema.',
+        permissions: allPermissions.map(p => p.id),
+    },
+    {
+        id: 'teacher',
+        name: 'Docente',
+        description: 'Acceso para gestionar sus asignaturas, ver horarios y estudiantes.',
+        permissions: [
+            'subjects.read',
+            'schedules.read',
+        ]
+    },
+    {
+        id: 'student',
+        name: 'Estudiante',
+        description: 'Acceso para ver horarios, asignaturas e inscribirse.',
+        permissions: [
+            'subjects.read',
+            'schedules.read',
+        ]
+    }
+];
