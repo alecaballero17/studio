@@ -1,8 +1,9 @@
+
 "use client"
 
 import * as React from "react"
-import { collection } from "firebase/firestore"
-import { MoreHorizontal, PlusCircle } from "lucide-react"
+import { collection, addDoc } from "firebase/firestore"
+import { MoreHorizontal, PlusCircle, X } from "lucide-react"
 
 import {
   Card,
@@ -26,10 +27,28 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { useCollection, useFirestore } from "@/firebase"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useToast } from "@/hooks/use-toast"
 
 type ScheduleSlot = {
   day: 'Lunes' | 'Martes' | 'Miércoles' | 'Jueves' | 'Viernes' | 'Sábado';
@@ -42,6 +61,7 @@ type CourseOffering = {
   subjectCode: string;
   group: string;
   teacherCode: string;
+  academicPeriodId: string;
   schedule: ScheduleSlot[];
 };
 
@@ -57,20 +77,105 @@ type Teacher = {
   name: string;
 }
 
+type Classroom = {
+    id: string;
+    code: string;
+}
+
+type AcademicPeriod = {
+    id: string;
+    name: string;
+}
+
 
 export default function HorariosPage() {
+  const { toast } = useToast();
   const firestore = useFirestore()
 
   const offeringsCollection = firestore ? collection(firestore, "course-offerings") : null
   const subjectsCollection = firestore ? collection(firestore, "subjects") : null
   const teachersCollection = firestore ? collection(firestore, "teachers") : null
+  const classroomsCollection = firestore ? collection(firestore, "classrooms") : null
+  const periodsCollection = firestore ? collection(firestore, "academic-periods") : null
+
 
   const { data: courseOfferings, loading: loadingOfferings, error: errorOfferings } = useCollection<CourseOffering>(offeringsCollection)
   const { data: subjects, loading: loadingSubjects } = useCollection<Subject>(subjectsCollection)
   const { data: teachers, loading: loadingTeachers } = useCollection<Teacher>(teachersCollection)
+  const { data: classrooms, loading: loadingClassrooms } = useCollection<Classroom>(classroomsCollection)
+  const { data: academicPeriods, loading: loadingPeriods } = useCollection<AcademicPeriod>(periodsCollection)
 
-  const isLoading = loadingOfferings || loadingSubjects || loadingTeachers;
+
+  const isLoading = loadingOfferings || loadingSubjects || loadingTeachers || loadingClassrooms || loadingPeriods;
   const error = errorOfferings;
+
+  const [sheetOpen, setSheetOpen] = React.useState(false);
+  
+  // Form state
+  const [subjectCode, setSubjectCode] = React.useState("");
+  const [group, setGroup] = React.useState("");
+  const [teacherCode, setTeacherCode] = React.useState("");
+  const [academicPeriodId, setAcademicPeriodId] = React.useState("");
+  const [scheduleSlots, setScheduleSlots] = React.useState<Partial<ScheduleSlot>[]>([
+    { day: undefined, time: "", classroom: "" },
+  ]);
+
+  const handleAddSlot = () => {
+    setScheduleSlots([...scheduleSlots, { day: undefined, time: "", classroom: "" }]);
+  };
+
+  const handleRemoveSlot = (index: number) => {
+    const newSlots = scheduleSlots.filter((_, i) => i !== index);
+    setScheduleSlots(newSlots);
+  };
+  
+  const handleSlotChange = (index: number, field: keyof ScheduleSlot, value: string) => {
+    const newSlots = [...scheduleSlots];
+    newSlots[index] = { ...newSlots[index], [field]: value };
+    setScheduleSlots(newSlots);
+  };
+
+  const resetForm = () => {
+    setSubjectCode("");
+    setGroup("");
+    setTeacherCode("");
+    setAcademicPeriodId("");
+    setScheduleSlots([{ day: undefined, time: "", classroom: "" }]);
+  }
+  
+  const handleCreateCourseOffering = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!subjectCode || !group || !teacherCode || !academicPeriodId || !firestore) {
+        toast({ variant: "destructive", title: "Campos incompletos", description: "Por favor, complete todos los campos principales." });
+        return;
+    }
+
+    const finalSchedule = scheduleSlots.filter(
+        (slot) => slot.day && slot.time && slot.classroom
+    ) as ScheduleSlot[];
+
+    if (finalSchedule.length === 0) {
+        toast({ variant: "destructive", title: "Horario incompleto", description: "Debe agregar al menos un horario válido." });
+        return;
+    }
+
+    try {
+        const offeringsRef = collection(firestore, 'course-offerings');
+        await addDoc(offeringsRef, {
+            subjectCode,
+            group,
+            teacherCode,
+            academicPeriodId,
+            schedule: finalSchedule,
+        });
+
+        toast({ title: "Grupo Creado", description: "La nueva oferta académica ha sido guardada." });
+        setSheetOpen(false);
+        resetForm();
+    } catch (error: any) {
+        toast({ variant: "destructive", title: "Error al guardar", description: error.message || "No se pudo crear el grupo." });
+    }
+  };
 
 
   return (
@@ -92,10 +197,98 @@ export default function HorariosPage() {
                 Listado de materias, grupos y horarios disponibles.
               </CardDescription>
             </div>
-            <Button size="sm" className="gap-1" disabled>
-              <PlusCircle className="h-4 w-4" />
-              Agregar Grupo
-            </Button>
+            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+                <SheetTrigger asChild>
+                    <Button size="sm" className="gap-1">
+                        <PlusCircle className="h-4 w-4" />
+                        Agregar Grupo
+                    </Button>
+                </SheetTrigger>
+                <SheetContent className="sm:max-w-xl overflow-y-auto">
+                    <form onSubmit={handleCreateCourseOffering}>
+                        <SheetHeader>
+                            <SheetTitle>Agregar Nuevo Grupo</SheetTitle>
+                            <SheetDescription>
+                                Complete el formulario para crear una nueva oferta académica.
+                            </SheetDescription>
+                        </SheetHeader>
+                        <div className="grid gap-6 py-6">
+                            {/* Main Details */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="subject">Asignatura</Label>
+                                    <Select value={subjectCode} onValueChange={setSubjectCode}>
+                                        <SelectTrigger id="subject"><SelectValue placeholder="Seleccione una asignatura" /></SelectTrigger>
+                                        <SelectContent>{subjects?.map(s => <SelectItem key={s.id} value={s.code}>{s.name} ({s.code})</SelectItem>)}</SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="group">Grupo</Label>
+                                    <Input id="group" placeholder="Ej. SA, Z1" value={group} onChange={e => setGroup(e.target.value.toUpperCase())} />
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="teacher">Docente</Label>
+                                    <Select value={teacherCode} onValueChange={setTeacherCode}>
+                                        <SelectTrigger id="teacher"><SelectValue placeholder="Seleccione un docente" /></SelectTrigger>
+                                        <SelectContent>{teachers?.map(t => <SelectItem key={t.id} value={t.code}>{t.name}</SelectItem>)}</SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="period">Período Académico</Label>
+                                    <Select value={academicPeriodId} onValueChange={setAcademicPeriodId}>
+                                        <SelectTrigger id="period"><SelectValue placeholder="Seleccione un período" /></SelectTrigger>
+                                        <SelectContent>{academicPeriods?.map(p => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}</SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+                            {/* Schedule Slots */}
+                            <div className="grid gap-4">
+                                <Label className="font-semibold">Horarios</Label>
+                                {scheduleSlots.map((slot, index) => (
+                                    <div key={index} className="grid grid-cols-12 gap-2 items-center relative rounded-md border p-3">
+                                        <div className="col-span-12 md:col-span-3 grid gap-1">
+                                            <Label htmlFor={`day-${index}`} className="text-xs">Día</Label>
+                                            <Select value={slot.day} onValueChange={(value) => handleSlotChange(index, "day", value)}>
+                                                <SelectTrigger id={`day-${index}`}><SelectValue placeholder="Día" /></SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="Lunes">Lunes</SelectItem>
+                                                    <SelectItem value="Martes">Martes</SelectItem>
+                                                    <SelectItem value="Miércoles">Miércoles</SelectItem>
+                                                    <SelectItem value="Jueves">Jueves</SelectItem>
+                                                    <SelectItem value="Viernes">Viernes</SelectItem>
+                                                    <SelectItem value="Sábado">Sábado</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                        <div className="col-span-6 md:col-span-4 grid gap-1">
+                                            <Label htmlFor={`time-${index}`} className="text-xs">Hora</Label>
+                                            <Input id={`time-${index}`} placeholder="07:00-09:15" value={slot.time} onChange={(e) => handleSlotChange(index, "time", e.target.value)} />
+                                        </div>
+                                        <div className="col-span-6 md:col-span-4 grid gap-1">
+                                            <Label htmlFor={`classroom-${index}`} className="text-xs">Aula</Label>
+                                             <Select value={slot.classroom} onValueChange={(value) => handleSlotChange(index, "classroom", value)}>
+                                                <SelectTrigger id={`classroom-${index}`}><SelectValue placeholder="Aula" /></SelectTrigger>
+                                                <SelectContent>{classrooms?.map(c => <SelectItem key={c.id} value={c.code}>{c.code}</SelectItem>)}</SelectContent>
+                                            </Select>
+                                        </div>
+                                         {scheduleSlots.length > 1 && (
+                                            <div className="col-span-12 md:col-span-1 flex items-end justify-end">
+                                                <Button type="button" variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => handleRemoveSlot(index)}>
+                                                    <X className="h-4 w-4"/>
+                                                </Button>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                                <Button type="button" variant="outline" size="sm" onClick={handleAddSlot}>Agregar Horario</Button>
+                            </div>
+                        </div>
+                        <div className="flex justify-end pt-4">
+                            <Button type="submit">Guardar Grupo</Button>
+                        </div>
+                    </form>
+                </SheetContent>
+            </Sheet>
           </div>
         </CardHeader>
         <CardContent>
@@ -198,3 +391,5 @@ export default function HorariosPage() {
     </div>
   )
 }
+
+    
