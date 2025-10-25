@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
-import { School, Users, ClipboardUser, Activity } from "lucide-react"
+import { School, Users, Clipboard, Activity } from "lucide-react"
 import { classrooms, teachers, users, attendanceData } from "@/lib/placeholder-data"
 
 const KpiCard = ({ title, value, icon: Icon, description }: { title: string, value: string, icon: React.ElementType, description: string }) => (
@@ -44,7 +44,7 @@ export default function DashboardPage() {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <KpiCard title="Total Estudiantes" value={users.filter(u => u.role === 'Estudiante').length.toString()} icon={Users} description="Estudiantes activos en el sistema" />
-        <KpiCard title="Total Docentes" value={teachers.length.toString()} icon={ClipboardUser} description="Docentes registrados" />
+        <KpiCard title="Total Docentes" value={teachers.length.toString()} icon={Clipboard} description="Docentes registrados" />
         <KpiCard title="Aulas Disponibles" value={classrooms.filter(c => c.status === 'Disponible').length.toString()} icon={School} description="Aulas listas para ser asignadas" />
         <KpiCard title="Tasa de Asistencia" value="91.5%" icon={Activity} description="Promedio de esta semana" />
       </div>

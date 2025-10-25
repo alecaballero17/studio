@@ -6,7 +6,7 @@ import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
-  ClipboardUser,
+  Clipboard,
   GraduationCap,
   Home,
   School,
@@ -125,7 +125,7 @@ const AppNav = () => (
             <SidebarMenu>
             <SidebarMenuItem>
                 <SidebarMenuButton href="/dashboard/docentes" tooltip="Docentes">
-                <ClipboardUser />
+                <Clipboard />
                 Docentes
                 </SidebarMenuButton>
             </SidebarMenuItem>
