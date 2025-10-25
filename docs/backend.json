@@ -15,6 +15,26 @@
         }
       },
       "required": ["name", "code"]
+    },
+    "career": {
+      "title": "Career",
+      "description": "Represents an academic program within a faculty.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the academic program."
+        },
+        "code": {
+          "type": "string",
+          "description": "The unique code for the career (e.g., 'INF')."
+        },
+        "facultyCode": {
+          "type": "string",
+          "description": "The code of the faculty this career belongs to."
+        }
+      },
+      "required": ["name", "code", "facultyCode"]
     }
   },
   "auth": {
@@ -26,6 +46,12 @@
         "$ref": "#/entities/faculty"
       },
       "description": "Collection of university faculties."
+    },
+    "/careers/{careerId}": {
+      "schema": {
+        "$ref": "#/entities/career"
+      },
+      "description": "Collection of academic careers."
     }
   }
 }
