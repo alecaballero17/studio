@@ -50,6 +50,20 @@ export const classrooms: Classroom[] = [
   { id: 'AUL005', code: '225-LC2', capacity: 40, type: 'Laboratorio', status: 'Disponible' },
 ];
 
+export type Faculty = {
+  id: string;
+  name: string;
+  code: string;
+};
+
+export const faculties: Faculty[] = [
+    { id: 'FAC001', name: 'Facultad de Ingeniería en Ciencias de la Computación y Telecomunicaciones', code: 'FICCT' },
+    { id: 'FAC002', name: 'Facultad de Ciencias Económicas y Financieras', code: 'FACEF' },
+    { id: 'FAC003', name: 'Facultad de Humanidades', code: 'FH' },
+    { id: 'FAC004', name: 'Facultad Politécnica', code: 'FP' },
+];
+
+
 export const attendanceData = [
     { date: "Lun", Asistencia: 92 },
     { date: "Mar", Asistencia: 95 },
