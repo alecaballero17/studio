@@ -59,6 +59,41 @@
         }
       },
       "required": ["name", "code", "level", "credits"]
+    },
+    "teacher": {
+      "title": "Teacher",
+      "description": "Represents a teacher or professor.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The full name of the teacher."
+        },
+        "code": {
+          "type": "string",
+          "description": "The unique code for the teacher."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The teacher's email address."
+        },
+        "category": {
+          "type": "string",
+          "enum": ["Titular", "Asociado", "Asistente"],
+          "description": "The academic category of the teacher."
+        },
+        "dedication": {
+          "type": "string",
+          "enum": ["Tiempo Completo", "Medio Tiempo", "Hora Catedra"],
+          "description": "The dedication level of the teacher."
+        },
+        "avatar": {
+            "type": "string",
+            "description": "URL to the teacher's avatar image."
+        }
+      },
+      "required": ["name", "code", "email", "category", "dedication"]
     }
   },
   "auth": {
@@ -82,6 +117,12 @@
         "$ref": "#/entities/subject"
       },
       "description": "Collection of academic subjects."
+    },
+    "/teachers/{teacherId}": {
+      "schema": {
+        "$ref": "#/entities/teacher"
+      },
+      "description": "Collection of university teachers."
     }
   }
 }
