@@ -14,6 +14,7 @@ import {
   Shield,
   Users,
 } from "lucide-react"
+import { usePathname, useRouter } from "next/navigation"
 
 import {
   Sidebar,
@@ -33,6 +34,8 @@ import { Logo } from "@/components/app/logo"
 import { UserNav } from "@/components/app/user-nav"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Badge } from "@/components/ui/badge"
+import React, { useEffect } from "react"
+import { useUser } from "@/firebase"
 
 const MobileSidebar = () => (
   <Sheet>
@@ -62,11 +65,13 @@ const MobileSidebar = () => (
   </Sheet>
 )
 
-const AppNav = () => (
+const AppNav = () => {
+    const pathname = usePathname();
+    return (
     <>
         <SidebarMenu>
             <SidebarMenuItem>
-                <SidebarMenuButton as="a" href="/dashboard" tooltip="Dashboard">
+                <SidebarMenuButton as="a" href="/dashboard" tooltip="Dashboard" isActive={pathname === "/dashboard"}>
                     <Home />
                     Dashboard
                 </SidebarMenuButton>
@@ -77,13 +82,13 @@ const AppNav = () => (
             <SidebarGroupLabel>Administración</SidebarGroupLabel>
             <SidebarMenu>
             <SidebarMenuItem>
-                <SidebarMenuButton as="a" href="/dashboard/usuarios" tooltip="Usuarios">
+                <SidebarMenuButton as="a" href="/dashboard/usuarios" tooltip="Usuarios" isActive={pathname === "/dashboard/usuarios"}>
                     <Users />
                     Usuarios
                 </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <SidebarMenuButton as="a" href="/dashboard/roles" tooltip="Roles">
+                <SidebarMenuButton as="a" href="/dashboard/roles" tooltip="Roles" isActive={pathname === "/dashboard/roles"}>
                     <Shield />
                     Roles y Permisos
                 </SidebarMenuButton>
@@ -95,25 +100,25 @@ const AppNav = () => (
             <SidebarGroupLabel>Gestión Académica</SidebarGroupLabel>
             <SidebarMenu>
             <SidebarMenuItem>
-                <SidebarMenuButton as="a" href="/dashboard/facultades" tooltip="Facultades">
+                <SidebarMenuButton as="a" href="/dashboard/facultades" tooltip="Facultades" isActive={pathname === "/dashboard/facultades"}>
                     <Building2 />
                     Facultades
                 </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <SidebarMenuButton as="a" href="/dashboard/carreras" tooltip="Carreras">
+                <SidebarMenuButton as="a" href="/dashboard/carreras" tooltip="Carreras" isActive={pathname === "/dashboard/carreras"}>
                     <GraduationCap />
                     Carreras
                 </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <SidebarMenuButton as="a" href="/dashboard/asignaturas" tooltip="Asignaturas">
+                <SidebarMenuButton as="a" href="/dashboard/asignaturas" tooltip="Asignaturas" isActive={pathname === "/dashboard/asignaturas"}>
                     <BookUser />
                     Asignaturas
                 </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <SidebarMenuButton as="a" href="/dashboard/periodos" tooltip="Períodos">
+                <SidebarMenuButton as="a" href="/dashboard/periodos" tooltip="Períodos" isActive={pathname === "/dashboard/periodos"}>
                     <CalendarDays />
                     Períodos Académicos
                 </SidebarMenuButton>
@@ -125,7 +130,7 @@ const AppNav = () => (
             <SidebarGroupLabel>Personal</SidebarGroupLabel>
             <SidebarMenu>
             <SidebarMenuItem>
-                <SidebarMenuButton as="a" href="/dashboard/docentes" tooltip="Docentes">
+                <SidebarMenuButton as="a" href="/dashboard/docentes" tooltip="Docentes" isActive={pathname === "/dashboard/docentes"}>
                     <Clipboard />
                     Docentes
                 </SidebarMenuButton>
@@ -137,13 +142,13 @@ const AppNav = () => (
             <SidebarGroupLabel>Recursos</SidebarGroupLabel>
             <SidebarMenu>
             <SidebarMenuItem>
-                <SidebarMenuButton as="a" href="/dashboard/aulas" tooltip="Aulas">
+                <SidebarMenuButton as="a" href="/dashboard/aulas" tooltip="Aulas" isActive={pathname === "/dashboard/aulas"}>
                     <School />
                     Aulas
                 </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <SidebarMenuButton as="a" href="/dashboard/horarios" tooltip="Horarios">
+                <SidebarMenuButton as="a" href="/dashboard/horarios" tooltip="Horarios" isActive={pathname === "/dashboard/horarios"}>
                     <CalendarDays />
                     Horarios
                     <Badge variant="destructive" className="ml-auto">BETA</Badge>
@@ -152,29 +157,26 @@ const AppNav = () => (
             </SidebarMenu>
         </SidebarGroup>
     </>
-)
+    )
+}
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  // const { user, loading } = useUser();
-  // const router = useRouter();
+  const { user, loading } = useUser();
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!loading && !user) {
-  //     router.push('/login');
-  //   }
-  // }, [user, loading, router]);
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
 
-  // if (loading) {
-  //   return <div className="flex min-h-screen w-full items-center justify-center bg-background"><p>Cargando...</p></div>;
-  // }
-  
-  // if (!user) {
-  //   return null;
-  // }
+  if (loading || !user) {
+    return <div className="flex min-h-screen w-full items-center justify-center bg-background"><p>Cargando...</p></div>;
+  }
 
   return (
     <SidebarProvider>

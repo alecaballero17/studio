@@ -1,16 +1,49 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Logo } from "@/components/app/logo";
+import { useAuth, useUser } from "@/firebase";
+import { useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function LoginPage() {
   const router = useRouter();
+  const auth = useAuth();
+  const { user, loading } = useUser();
+  const { toast } = useToast();
 
-  const handleDemoLogin = () => {
-    router.push('/dashboard');
+  useEffect(() => {
+    if (!loading && user) {
+      router.push('/dashboard');
+    }
+  }, [user, loading, router]);
+
+  const handleGoogleSignIn = async () => {
+    if (!auth) return;
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      router.push('/dashboard');
+    } catch (error: any) {
+      console.error("Error during Google sign-in:", error);
+      toast({
+        variant: "destructive",
+        title: "Error de autenticación",
+        description: error.message || "No se pudo iniciar sesión con Google.",
+      });
+    }
   };
+
+  if (loading || user) {
+     return (
+      <div className="flex min-h-screen w-full items-center justify-center bg-background">
+        <p>Cargando...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-background p-4" style={{
@@ -29,11 +62,11 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">
-            <Button onClick={handleDemoLogin} className="w-full">
-                Acceder al Dashboard (Modo Demo)
+            <Button onClick={handleGoogleSignIn} className="w-full">
+                Acceder con Google
             </Button>
             <p className="text-center text-xs text-muted-foreground">
-              El inicio de sesión real está temporalmente desactivado.
+              Utilice su cuenta institucional de Google para iniciar sesión.
             </p>
           </div>
         </CardContent>
