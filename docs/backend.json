@@ -50,12 +50,12 @@
           "description": "The unique code for the subject (e.g., 'INF-111')."
         },
         "level": {
-            "type": "number",
-            "description": "The academic level or semester for the subject."
+          "type": "number",
+          "description": "The academic level or semester for the subject."
         },
         "credits": {
-            "type": "number",
-            "description": "The number of credits the subject is worth."
+          "type": "number",
+          "description": "The number of credits the subject is worth."
         }
       },
       "required": ["name", "code", "level", "credits"]
@@ -89,8 +89,8 @@
           "description": "The dedication level of the teacher."
         },
         "avatar": {
-            "type": "string",
-            "description": "URL to the teacher's avatar image."
+          "type": "string",
+          "description": "URL to the teacher's avatar image."
         }
       },
       "required": ["name", "code", "email", "category", "dedication"]
@@ -120,6 +120,33 @@
         }
       },
       "required": ["code", "capacity", "type", "status"]
+    },
+    "academicPeriod": {
+      "title": "Academic Period",
+      "description": "Represents an academic period with start and end dates.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the academic period (e.g., '1-2025')."
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date",
+          "description": "The start date of the academic period."
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date",
+          "description": "The end date of the academic period."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Activo", "Inactivo", "Cerrado"],
+          "description": "The status of the academic period."
+        }
+      },
+      "required": ["name", "startDate", "endDate", "status"]
     }
   },
   "auth": {
@@ -155,6 +182,12 @@
         "$ref": "#/entities/classroom"
       },
       "description": "Collection of university classrooms and laboratories."
+    },
+    "/academic-periods/{periodId}": {
+      "schema": {
+        "$ref": "#/entities/academicPeriod"
+      },
+      "description": "Collection of academic periods."
     }
   }
 }
