@@ -66,12 +66,10 @@ const AppNav = () => (
     <>
         <SidebarMenu>
             <SidebarMenuItem>
-                <Link href="/dashboard" passHref>
-                    <SidebarMenuButton as="a" tooltip="Dashboard">
-                        <Home />
-                        Dashboard
-                    </SidebarMenuButton>
-                </Link>
+                <SidebarMenuButton as="a" href="/dashboard" tooltip="Dashboard">
+                    <Home />
+                    Dashboard
+                </SidebarMenuButton>
             </SidebarMenuItem>
         </SidebarMenu>
 
@@ -79,20 +77,16 @@ const AppNav = () => (
             <SidebarGroupLabel>Administración</SidebarGroupLabel>
             <SidebarMenu>
             <SidebarMenuItem>
-                <Link href="/dashboard/usuarios" passHref>
-                    <SidebarMenuButton as="a" tooltip="Usuarios">
-                        <Users />
-                        Usuarios
-                    </SidebarMenuButton>
-                </Link>
+                <SidebarMenuButton as="a" href="/dashboard/usuarios" tooltip="Usuarios">
+                    <Users />
+                    Usuarios
+                </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <Link href="/dashboard/roles" passHref>
-                    <SidebarMenuButton as="a" tooltip="Roles">
-                        <Shield />
-                        Roles y Permisos
-                    </SidebarMenuButton>
-                </Link>
+                <SidebarMenuButton as="a" href="/dashboard/roles" tooltip="Roles">
+                    <Shield />
+                    Roles y Permisos
+                </SidebarMenuButton>
             </SidebarMenuItem>
             </SidebarMenu>
         </SidebarGroup>
@@ -101,36 +95,28 @@ const AppNav = () => (
             <SidebarGroupLabel>Gestión Académica</SidebarGroupLabel>
             <SidebarMenu>
             <SidebarMenuItem>
-                <Link href="/dashboard/facultades" passHref>
-                    <SidebarMenuButton as="a" tooltip="Facultades">
-                        <Building2 />
-                        Facultades
-                    </SidebarMenuButton>
-                </Link>
+                <SidebarMenuButton as="a" href="/dashboard/facultades" tooltip="Facultades">
+                    <Building2 />
+                    Facultades
+                </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <Link href="/dashboard/carreras" passHref>
-                    <SidebarMenuButton as="a" tooltip="Carreras">
-                        <GraduationCap />
-                        Carreras
-                    </SidebarMenuButton>
-                </Link>
+                <SidebarMenuButton as="a" href="/dashboard/carreras" tooltip="Carreras">
+                    <GraduationCap />
+                    Carreras
+                </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <Link href="/dashboard/asignaturas" passHref>
-                    <SidebarMenuButton as="a" tooltip="Asignaturas">
-                        <BookUser />
-                        Asignaturas
-                    </SidebarMenuButton>
-                </Link>
+                <SidebarMenuButton as="a" href="/dashboard/asignaturas" tooltip="Asignaturas">
+                    <BookUser />
+                    Asignaturas
+                </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <Link href="/dashboard/periodos" passHref>
-                    <SidebarMenuButton as="a" tooltip="Períodos">
-                        <CalendarDays />
-                        Períodos Académicos
-                    </SidebarMenuButton>
-                </Link>
+                <SidebarMenuButton as="a" href="/dashboard/periodos" tooltip="Períodos">
+                    <CalendarDays />
+                    Períodos Académicos
+                </SidebarMenuButton>
             </SidebarMenuItem>
             </SidebarMenu>
         </SidebarGroup>
@@ -139,12 +125,10 @@ const AppNav = () => (
             <SidebarGroupLabel>Personal</SidebarGroupLabel>
             <SidebarMenu>
             <SidebarMenuItem>
-                <Link href="/dashboard/docentes" passHref>
-                    <SidebarMenuButton as="a" tooltip="Docentes">
-                        <Clipboard />
-                        Docentes
-                    </SidebarMenuButton>
-                </Link>
+                <SidebarMenuButton as="a" href="/dashboard/docentes" tooltip="Docentes">
+                    <Clipboard />
+                    Docentes
+                </SidebarMenuButton>
             </SidebarMenuItem>
             </SidebarMenu>
         </SidebarGroup>
@@ -153,21 +137,17 @@ const AppNav = () => (
             <SidebarGroupLabel>Recursos</SidebarGroupLabel>
             <SidebarMenu>
             <SidebarMenuItem>
-                <Link href="/dashboard/aulas" passHref>
-                    <SidebarMenuButton as="a" tooltip="Aulas">
-                        <School />
-                        Aulas
-                    </SidebarMenuButton>
-                </Link>
+                <SidebarMenuButton as="a" href="/dashboard/aulas" tooltip="Aulas">
+                    <School />
+                    Aulas
+                </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <Link href="/dashboard/horarios" passHref>
-                    <SidebarMenuButton as="a" tooltip="Horarios">
-                        <CalendarDays />
-                        Horarios
-                        <Badge variant="destructive" className="ml-auto">BETA</Badge>
-                    </SidebarMenuButton>
-                </Link>
+                <SidebarMenuButton as="a" href="/dashboard/horarios" tooltip="Horarios">
+                    <CalendarDays />
+                    Horarios
+                    <Badge variant="destructive" className="ml-auto">BETA</Badge>
+                </SidebarMenuButton>
             </SidebarMenuItem>
             </SidebarMenu>
         </SidebarGroup>
