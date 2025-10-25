@@ -1,3 +1,5 @@
+"use client"
+
 import { MoreHorizontal, PlusCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -114,7 +116,8 @@ export default function CarrerasPage() {
             </TableHeader>
             <TableBody>
               {careers.map(career => {
-                const faculty = faculties.find(f => f.code === career.facultyCode);
+                // Since faculties is now from firestore, we need to handle it being null or loading
+                const faculty = faculties?.find(f => f.code === career.facultyCode);
                 return (
                     <TableRow key={career.id}>
                     <TableCell className="font-medium">{career.name}</TableCell>

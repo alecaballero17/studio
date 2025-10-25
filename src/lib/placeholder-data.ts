@@ -1,4 +1,4 @@
-import { PlaceHolderImages } from "./placeholder-images";
+
 
 export type User = {
   id: string;
@@ -10,11 +10,11 @@ export type User = {
 };
 
 export const users: User[] = [
-  { id: 'USR001', name: 'Ana Morales', email: 'ana.morales@ficct.uagrm.edu.bo', role: 'Administrador', status: 'Activo', avatar: PlaceHolderImages.find(img => img.id === 'user-avatar-2')?.imageUrl || '' },
-  { id: 'USR002', name: 'Carlos Sanchez', email: 'carlos.sanchez@ficct.uagrm.edu.bo', role: 'Docente', status: 'Activo', avatar: PlaceHolderImages.find(img => img.id === 'user-avatar-3')?.imageUrl || '' },
-  { id: 'USR003', name: 'Luisa Fernandez', email: 'luisa.fernandez@ficct.uagrm.edu.bo', role: 'Estudiante', status: 'Activo', avatar: PlaceHolderImages.find(img => img.id === 'user-avatar-7')?.imageUrl || '' },
-  { id: 'USR004', name: 'Jorge Paredes', email: 'jorge.paredes@ficct.uagrm.edu.bo', role: 'Estudiante', status: 'Inactivo', avatar: PlaceHolderImages.find(img => img.id === 'user-avatar-6')?.imageUrl || '' },
-  { id: 'USR005', name: 'Sofia Rodriguez', email: 'sofia.rodriguez@ficct.uagrm.edu.bo', role: 'Docente', status: 'Activo', avatar: PlaceHolderImages.find(img => img.id === 'user-avatar-5')?.imageUrl || '' },
+  { id: 'USR001', name: 'Ana Morales', email: 'ana.morales@ficct.uagrm.edu.bo', role: 'Administrador', status: 'Activo', avatar: 'https://picsum.photos/seed/usr1/40/40' },
+  { id: 'USR002', name: 'Carlos Sanchez', email: 'carlos.sanchez@ficct.uagrm.edu.bo', role: 'Docente', status: 'Activo', avatar: 'https://picsum.photos/seed/usr2/40/40' },
+  { id: 'USR003', name: 'Luisa Fernandez', email: 'luisa.fernandez@ficct.uagrm.edu.bo', role: 'Estudiante', status: 'Activo', avatar: 'https://picsum.photos/seed/usr3/40/40' },
+  { id: 'USR004', name: 'Jorge Paredes', email: 'jorge.paredes@ficct.uagrm.edu.bo', role: 'Estudiante', status: 'Inactivo', avatar: 'https://picsum.photos/seed/usr4/40/40' },
+  { id: 'USR005', name: 'Sofia Rodriguez', email: 'sofia.rodriguez@ficct.uagrm.edu.bo', role: 'Docente', status: 'Activo', avatar: 'https://picsum.photos/seed/usr5/40/40' },
 ];
 
 export type Teacher = {
