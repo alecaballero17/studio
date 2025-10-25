@@ -121,3 +121,18 @@ export const careers: Career[] = [
   { id: 'CAR001', name: 'Ingeniería Informática', code: 'INF', facultyCode: 'FICCT' },
   { id: 'CAR002', name: 'Ingeniería en Redes y Telecomunicaciones', code: 'TEL', facultyCode: 'FICCT' },
 ];
+
+export type AcademicPeriod = {
+  id: string;
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  status: 'Activo' | 'Inactivo' | 'Cerrado';
+};
+
+export const academicPeriods: AcademicPeriod[] = [
+  { id: 'PER001', name: '2-2024', startDate: new Date(2024, 7, 1), endDate: new Date(2024, 11, 20), status: 'Activo' },
+  { id: 'PER002', name: '1-2024', startDate: new Date(2024, 1, 5), endDate: new Date(2024, 6, 21), status: 'Cerrado' },
+  { id: 'PER003', name: 'Verano 2024', startDate: new Date(2024, 0, 8), endDate: new Date(2024, 0, 26), status: 'Cerrado' },
+  { id: 'PER004', name: '2-2023', startDate: new Date(2023, 7, 1), endDate: new Date(2023, 11, 20), status: 'Cerrado' },
+];
