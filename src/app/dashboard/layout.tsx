@@ -65,10 +65,12 @@ const AppNav = () => (
     <>
         <SidebarMenu>
             <SidebarMenuItem>
-            <SidebarMenuButton href="/dashboard" tooltip="Dashboard">
-                <Home />
-                Dashboard
-            </SidebarMenuButton>
+                <Link href="/dashboard" passHref>
+                    <SidebarMenuButton as="a" tooltip="Dashboard">
+                        <Home />
+                        Dashboard
+                    </SidebarMenuButton>
+                </Link>
             </SidebarMenuItem>
         </SidebarMenu>
 
@@ -76,16 +78,20 @@ const AppNav = () => (
             <SidebarGroupLabel>Administración</SidebarGroupLabel>
             <SidebarMenu>
             <SidebarMenuItem>
-                <SidebarMenuButton href="/dashboard/usuarios" tooltip="Usuarios">
-                <Users />
-                Usuarios
-                </SidebarMenuButton>
+                <Link href="/dashboard/usuarios" passHref>
+                    <SidebarMenuButton as="a" tooltip="Usuarios">
+                        <Users />
+                        Usuarios
+                    </SidebarMenuButton>
+                </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <SidebarMenuButton href="/dashboard/roles" tooltip="Roles">
-                <Shield />
-                Roles y Permisos
-                </SidebarMenuButton>
+                <Link href="/dashboard/roles" passHref>
+                    <SidebarMenuButton as="a" tooltip="Roles">
+                        <Shield />
+                        Roles y Permisos
+                    </SidebarMenuButton>
+                </Link>
             </SidebarMenuItem>
             </SidebarMenu>
         </SidebarGroup>
@@ -94,28 +100,36 @@ const AppNav = () => (
             <SidebarGroupLabel>Gestión Académica</SidebarGroupLabel>
             <SidebarMenu>
             <SidebarMenuItem>
-                <SidebarMenuButton href="/dashboard/facultades" tooltip="Facultades">
-                <Building2 />
-                Facultades
-                </SidebarMenuButton>
+                <Link href="/dashboard/facultades" passHref>
+                    <SidebarMenuButton as="a" tooltip="Facultades">
+                        <Building2 />
+                        Facultades
+                    </SidebarMenuButton>
+                </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <SidebarMenuButton href="/dashboard/carreras" tooltip="Carreras">
-                <GraduationCap />
-                Carreras
-                </SidebarMenuButton>
+                <Link href="/dashboard/carreras" passHref>
+                    <SidebarMenuButton as="a" tooltip="Carreras">
+                        <GraduationCap />
+                        Carreras
+                    </SidebarMenuButton>
+                </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <SidebarMenuButton href="/dashboard/asignaturas" tooltip="Asignaturas">
-                <BookUser />
-                Asignaturas
-                </SidebarMenuButton>
+                <Link href="/dashboard/asignaturas" passHref>
+                    <SidebarMenuButton as="a" tooltip="Asignaturas">
+                        <BookUser />
+                        Asignaturas
+                    </SidebarMenuButton>
+                </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <SidebarMenuButton href="/dashboard/periodos" tooltip="Períodos">
-                <CalendarDays />
-                Períodos Académicos
-                </SidebarMenuButton>
+                <Link href="/dashboard/periodos" passHref>
+                    <SidebarMenuButton as="a" tooltip="Períodos">
+                        <CalendarDays />
+                        Períodos Académicos
+                    </SidebarMenuButton>
+                </Link>
             </SidebarMenuItem>
             </SidebarMenu>
         </SidebarGroup>
@@ -124,10 +138,12 @@ const AppNav = () => (
             <SidebarGroupLabel>Personal</SidebarGroupLabel>
             <SidebarMenu>
             <SidebarMenuItem>
-                <SidebarMenuButton href="/dashboard/docentes" tooltip="Docentes">
-                <Clipboard />
-                Docentes
-                </SidebarMenuButton>
+                <Link href="/dashboard/docentes" passHref>
+                    <SidebarMenuButton as="a" tooltip="Docentes">
+                        <Clipboard />
+                        Docentes
+                    </SidebarMenuButton>
+                </Link>
             </SidebarMenuItem>
             </SidebarMenu>
         </SidebarGroup>
@@ -136,17 +152,21 @@ const AppNav = () => (
             <SidebarGroupLabel>Recursos</SidebarGroupLabel>
             <SidebarMenu>
             <SidebarMenuItem>
-                <SidebarMenuButton href="/dashboard/aulas" tooltip="Aulas">
-                <School />
-                Aulas
-                </SidebarMenuButton>
+                <Link href="/dashboard/aulas" passHref>
+                    <SidebarMenuButton as="a" tooltip="Aulas">
+                        <School />
+                        Aulas
+                    </SidebarMenuButton>
+                </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <SidebarMenuButton href="/dashboard/horarios" tooltip="Horarios">
-                <CalendarDays />
-                Horarios
-                <Badge variant="destructive" className="ml-auto">BETA</Badge>
-                </SidebarMenuButton>
+                <Link href="/dashboard/horarios" passHref>
+                    <SidebarMenuButton as="a" tooltip="Horarios">
+                        <CalendarDays />
+                        Horarios
+                        <Badge variant="destructive" className="ml-auto">BETA</Badge>
+                    </SidebarMenuButton>
+                </Link>
             </SidebarMenuItem>
             </SidebarMenu>
         </SidebarGroup>
