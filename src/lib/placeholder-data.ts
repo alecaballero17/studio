@@ -28,10 +28,17 @@ export type Teacher = {
 };
 
 export const teachers: Teacher[] = [
-  { id: 'DOC001', code: 'CSAN', name: 'Carlos Sanchez', email: 'carlos.sanchez@ficct.uagrm.edu.bo', category: 'Titular', dedication: 'Tiempo Completo', avatar: PlaceHolderImages.find(img => img.id === 'user-avatar-3')?.imageUrl || '' },
-  { id: 'DOC002', code: 'SROD', name: 'Sofia Rodriguez', email: 'sofia.rodriguez@ficct.uagrm.edu.bo', category: 'Asociado', dedication: 'Tiempo Completo', avatar: PlaceHolderImages.find(img => img.id === 'user-avatar-5')?.imageUrl || '' },
-  { id: 'DOC003', code: 'MPER', name: 'Mario Perez', email: 'mario.perez@ficct.uagrm.edu.bo', category: 'Asistente', dedication: 'Medio Tiempo', avatar: PlaceHolderImages.find(img => img.id === 'user-avatar-4')?.imageUrl || '' },
-  { id: 'DOC004', code: 'LGOM', name: 'Laura Gomez', email: 'laura.gomez@ficct.uagrm.edu.bo', category: 'Titular', dedication: 'Tiempo Completo', avatar: PlaceHolderImages.find(img => img.id === 'user-avatar-2')?.imageUrl || '' },
+  { id: 'DOC001', code: 'FFMO', name: 'FLORES FLORES MARCOS OSCAR', email: 'fflores@uagrm.edu.bo', category: 'Titular', dedication: 'Tiempo Completo', avatar: 'https://picsum.photos/seed/doc1/40/40' },
+  { id: 'DOC002', code: 'CMJR', name: 'CABELLO MERIDA JUAN RUBEN', email: 'jcabello@uagrm.edu.bo', category: 'Asociado', dedication: 'Tiempo Completo', avatar: 'https://picsum.photos/seed/doc2/40/40' },
+  { id: 'DOC003', code: 'CUJM', name: 'CORTEZ UZEDA JULIO MARTIN', email: 'jcortez@uagrm.edu.bo', category: 'Asistente', dedication: 'Medio Tiempo', avatar: 'https://picsum.photos/seed/doc3/40/40' },
+  { id: 'DOC004', code: 'GBKE', name: 'GUTIERREZ BRUNO KATIME ESTHER', email: 'kgutierrez@uagrm.edu.bo', category: 'Titular', dedication: 'Tiempo Completo', avatar: 'https://picsum.photos/seed/doc4/40/40' },
+  { id: 'DOC005', code: 'GPED', name: 'GIANELLA PEREDO EDUARDO', email: 'eperedo@uagrm.edu.bo', category: 'Asociado', dedication: 'Tiempo Completo', avatar: 'https://picsum.photos/seed/doc5/40/40' },
+  { id: 'DOC006', code: 'MDVF', name: 'MONRROY DIPP VICTOR FERNANDO', email: 'vmonrroy@uagrm.edu.bo', category: 'Titular', dedication: 'Tiempo Completo', avatar: 'https://picsum.photos/seed/doc6/40/40' },
+  { id: 'DOC007', code: 'CCM', name: 'CARVAJAL CORDERO MARCIO', email: 'mcarvajal@uagrm.edu.bo', category: 'Asistente', dedication: 'Hora Catedra', avatar: 'https://picsum.photos/seed/doc7/40/40' },
+  { id: 'DOC008', code: 'HSJS', name: 'HINOJOSA SAAVEDRA JOSE SAID', email: 'jhinojosa@uagrm.edu.bo', category: 'Titular', dedication: 'Tiempo Completo', avatar: 'https://picsum.photos/seed/doc8/40/40' },
+  { id: 'DOC009', code: 'VGJO', name: 'VEIZAGA GONZALES JOSUE OBED', email: 'jveizaga@uagrm.edu.bo', category: 'Asociado', dedication: 'Tiempo Completo', avatar: 'https://picsum.photos/seed/doc9/40/40' },
+  { id: 'DOC010', code: 'VPL', name: 'VARGAS PEÑA LEONARDO', email: 'lvargas@uagrm.edu.bo', category: 'Titular', dedication: 'Tiempo Completo', avatar: 'https://picsum.photos/seed/doc10/40/40' },
+  { id: 'DOC011', code: 'PFU', name: 'PEREZ FERREIRA UBALDO', email: 'uperez@uagrm.edu.bo', category: 'Asistente', dedication: 'Medio Tiempo', avatar: 'https://picsum.photos/seed/doc11/40/40' },
 ];
 
 export type Classroom = {
