@@ -94,6 +94,32 @@
         }
       },
       "required": ["name", "code", "email", "category", "dedication"]
+    },
+    "classroom": {
+      "title": "Classroom",
+      "description": "Represents a physical space like a classroom or laboratory.",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "The unique code for the classroom (e.g., '225-LC1')."
+        },
+        "capacity": {
+          "type": "number",
+          "description": "The number of seats in the classroom."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["Laboratorio", "Aula Común", "Auditorio"],
+          "description": "The type of the classroom."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Disponible", "Ocupado", "Mantenimiento"],
+          "description": "The current status of the classroom."
+        }
+      },
+      "required": ["code", "capacity", "type", "status"]
     }
   },
   "auth": {
@@ -123,6 +149,12 @@
         "$ref": "#/entities/teacher"
       },
       "description": "Collection of university teachers."
+    },
+    "/classrooms/{classroomId}": {
+      "schema": {
+        "$ref": "#/entities/classroom"
+      },
+      "description": "Collection of university classrooms and laboratories."
     }
   }
 }
