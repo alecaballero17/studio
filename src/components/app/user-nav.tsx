@@ -12,28 +12,34 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useAuth, useUser } from "@/firebase"
+import { useAuth } from "@/firebase"
 import { LogOut, Settings, User as UserIcon } from "lucide-react"
 
+const demoUser = {
+    displayName: "Admin (Demo)",
+    email: "demo@ficct.uagrm.edu.bo",
+    photoURL: `https://avatar.vercel.sh/admin-demo.png`,
+};
+
 export function UserNav() {
-  const { user } = useUser();
   const auth = useAuth();
 
   const handleSignOut = async () => {
     if (auth) {
+        // In a real scenario, you'd also want to redirect to /login
         await auth.signOut();
     }
   }
 
-  if (!user) return null;
+  const user = demoUser;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-9 w-9 border">
-            <AvatarImage data-ai-hint="person portrait" src={user.photoURL || `https://avatar.vercel.sh/${user.uid}.png`} alt={user.displayName || 'user'} />
-            <AvatarFallback>{user.displayName?.charAt(0) || user.email?.charAt(0) || 'U'}</AvatarFallback>
+            <AvatarImage data-ai-hint="person portrait" src={user.photoURL} alt={user.displayName} />
+            <AvatarFallback>{user.displayName?.charAt(0) || 'A'}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -48,17 +54,17 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem disabled>
             <UserIcon className="mr-2 h-4 w-4" />
             <span>Perfil</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem disabled>
             <Settings className="mr-2 h-4 w-4" />
             <span>Configuración</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleSignOut}>
+        <DropdownMenuItem onClick={handleSignOut} disabled>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Cerrar sesión</span>
         </DropdownMenuItem>

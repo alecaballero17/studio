@@ -1,7 +1,6 @@
 "use client"
 
 import { MoreHorizontal, PlusCircle } from "lucide-react"
-import { collection } from "firebase/firestore"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -42,16 +41,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useFirestore } from "@/firebase"
-import { useCollection } from "@/firebase/firestore/use-collection"
+import { careers, faculties } from "@/lib/placeholder-data"
+
 
 export default function CarrerasPage() {
-  const firestore = useFirestore()
-  const { data: careers, loading: loadingCareers } = useCollection(firestore ? collection(firestore, 'careers') : null)
-  const { data: faculties, loading: loadingFaculties } = useCollection(firestore ? collection(firestore, 'faculties') : null)
-
-  const isLoading = loadingCareers || loadingFaculties;
-
+  
   return (
     <div className="flex flex-col gap-6">
        <div>
@@ -122,37 +116,31 @@ export default function CarrerasPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading ? (
-                <TableRow>
-                    <TableCell colSpan={4} className="text-center">Cargando datos...</TableCell>
-                </TableRow>
-              ) : (
-                careers?.map(career => {
-                  const faculty = faculties?.find(f => f.code === career.facultyCode);
-                  return (
-                      <TableRow key={career.id}>
-                      <TableCell className="font-medium">{career.name}</TableCell>
-                      <TableCell>{career.code}</TableCell>
-                      <TableCell>{faculty ? faculty.name : 'N/A'}</TableCell>
-                      <TableCell>
-                          <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                              <Button aria-haspopup="true" size="icon" variant="ghost">
-                              <MoreHorizontal className="h-4 w-4" />
-                              <span className="sr-only">Toggle menu</span>
-                              </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                              <DropdownMenuItem>Editar</DropdownMenuItem>
-                              <DropdownMenuItem className="text-destructive">Eliminar</DropdownMenuItem>
-                          </DropdownMenuContent>
-                          </DropdownMenu>
-                      </TableCell>
-                      </TableRow>
-                  )
-                })
-              )}
+              {careers?.map(career => {
+                const faculty = faculties?.find(f => f.code === career.facultyCode);
+                return (
+                    <TableRow key={career.id}>
+                    <TableCell className="font-medium">{career.name}</TableCell>
+                    <TableCell>{career.code}</TableCell>
+                    <TableCell>{faculty ? faculty.name : 'N/A'}</TableCell>
+                    <TableCell>
+                        <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button aria-haspopup="true" size="icon" variant="ghost">
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">Toggle menu</span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                            <DropdownMenuItem>Editar</DropdownMenuItem>
+                            <DropdownMenuItem className="text-destructive">Eliminar</DropdownMenuItem>
+                        </DropdownMenuContent>
+                        </DropdownMenu>
+                    </TableCell>
+                    </TableRow>
+                )
+              })}
             </TableBody>
           </Table>
         </CardContent>

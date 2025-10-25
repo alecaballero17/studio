@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { MoreHorizontal, PlusCircle } from "lucide-react"
-import { collection, addDoc, deleteDoc, doc } from "firebase/firestore"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -37,20 +36,17 @@ import {
 } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useFirestore } from "@/firebase"
-import { useCollection } from "@/firebase/firestore/use-collection"
 import { useToast } from "@/hooks/use-toast"
+import { faculties as placeholderFaculties } from "@/lib/placeholder-data"
 
 export default function FacultadesPage() {
-  const firestore = useFirestore()
-  const { data: faculties, loading, error } = useCollection(firestore ? collection(firestore, 'faculties') : null)
   const { toast } = useToast()
-
+  const [faculties, setFaculties] = React.useState(placeholderFaculties);
   const [sheetOpen, setSheetOpen] = React.useState(false)
   const [newFacultyName, setNewFacultyName] = React.useState("")
   const [newFacultyCode, setNewFacultyCode] = React.useState("")
 
-  const handleAddFaculty = async (e: React.FormEvent) => {
+  const handleAddFaculty = (e: React.FormEvent) => {
     e.preventDefault()
     if (!newFacultyName || !newFacultyCode) {
       toast({
@@ -60,48 +56,33 @@ export default function FacultadesPage() {
       })
       return
     }
-    if (firestore) {
-      try {
-        await addDoc(collection(firestore, 'faculties'), {
-          name: newFacultyName,
-          code: newFacultyCode,
-        })
-        toast({
-          title: "Facultad Agregada",
-          description: "La nueva facultad se ha guardado correctamente.",
-        })
-        setNewFacultyName("")
-        setNewFacultyCode("")
-        setSheetOpen(false)
-      } catch (error) {
-        console.error("Error adding document: ", error);
-        toast({
-          variant: "destructive",
-          title: "Error al guardar",
-          description: "Hubo un problema al agregar la facultad.",
-        })
-      }
-    }
+    
+    // This is a mock implementation
+    const newFaculty = {
+        id: `FAC${(faculties.length + 1).toString().padStart(3, '0')}`,
+        name: newFacultyName,
+        code: newFacultyCode,
+    };
+
+    setFaculties([...faculties, newFaculty]);
+    
+    toast({
+      title: "Facultad Agregada (Demo)",
+      description: "La nueva facultad se ha añadido a la lista local.",
+    })
+
+    setNewFacultyName("")
+    setNewFacultyCode("")
+    setSheetOpen(false)
   }
 
-  const handleDeleteFaculty = async (id: string) => {
-    if (firestore) {
-        if (confirm("¿Está seguro de que desea eliminar esta facultad?")) {
-            try {
-                await deleteDoc(doc(firestore, 'faculties', id))
-                toast({
-                    title: "Facultad Eliminada",
-                    description: "La facultad se ha eliminado correctamente.",
-                })
-            } catch (error) {
-                console.error("Error deleting document: ", error);
-                toast({
-                    variant: "destructive",
-                    title: "Error al eliminar",
-                    description: "Hubo un problema al eliminar la facultad.",
-                })
-            }
-        }
+  const handleDeleteFaculty = (id: string) => {
+     if (confirm("¿Está seguro de que desea eliminar esta facultad? (Demo)")) {
+        setFaculties(faculties.filter(f => f.id !== id));
+        toast({
+            title: "Facultad Eliminada (Demo)",
+            description: "La facultad se ha eliminado de la lista local.",
+        })
     }
   }
 
@@ -175,17 +156,7 @@ export default function FacultadesPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {loading && (
-                <TableRow>
-                  <TableCell colSpan={3} className="text-center">Cargando facultades...</TableCell>
-                </TableRow>
-              )}
-              {error && (
-                <TableRow>
-                  <TableCell colSpan={3} className="text-center text-destructive">Error al cargar los datos.</TableCell>
-                </TableRow>
-              )}
-              {!loading && faculties?.map(faculty => (
+              {faculties.map(faculty => (
                 <TableRow key={faculty.id}>
                   <TableCell className="font-medium">{faculty.name}</TableCell>
                   <TableCell>{faculty.code}</TableCell>

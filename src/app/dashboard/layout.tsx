@@ -33,9 +33,6 @@ import { Logo } from "@/components/app/logo"
 import { UserNav } from "@/components/app/user-nav"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Badge } from "@/components/ui/badge"
-import { useUser } from "@/firebase"
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
 
 const MobileSidebar = () => (
   <Sheet>
@@ -182,22 +179,22 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { user, loading } = useUser();
-  const router = useRouter();
+  // const { user, loading } = useUser();
+  // const router = useRouter();
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
-    }
-  }, [user, loading, router]);
+  // useEffect(() => {
+  //   if (!loading && !user) {
+  //     router.push('/login');
+  //   }
+  // }, [user, loading, router]);
 
-  if (loading) {
-    return <div className="flex min-h-screen w-full items-center justify-center bg-background"><p>Cargando...</p></div>;
-  }
+  // if (loading) {
+  //   return <div className="flex min-h-screen w-full items-center justify-center bg-background"><p>Cargando...</p></div>;
+  // }
   
-  if (!user) {
-    return null;
-  }
+  // if (!user) {
+  //   return null;
+  // }
 
   return (
     <SidebarProvider>
