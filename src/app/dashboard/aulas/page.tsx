@@ -1,3 +1,4 @@
+
 import { MoreHorizontal, PlusCircle } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -24,6 +25,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { classrooms } from "@/lib/placeholder-data"
 
 export default function ClassroomsPage() {
@@ -42,10 +60,46 @@ export default function ClassroomsPage() {
             Listado de todas las aulas y sus estados.
           </CardDescription>
            <div className="flex justify-end">
-            <Button size="sm" className="gap-1">
-              <PlusCircle className="h-4 w-4" />
-              Agregar Aula
-            </Button>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button size="sm" className="gap-1">
+                  <PlusCircle className="h-4 w-4" />
+                  Agregar Aula
+                </Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Agregar Nueva Aula</SheetTitle>
+                  <SheetDescription>
+                    Complete el formulario para registrar un nuevo espacio físico.
+                  </SheetDescription>
+                </SheetHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="code" className="text-right">Código</Label>
+                    <Input id="code" placeholder="Ej. 225-LC3" className="col-span-3" />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="capacity" className="text-right">Capacidad</Label>
+                    <Input id="capacity" type="number" placeholder="Ej. 40" className="col-span-3" />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="type" className="text-right">Tipo</Label>
+                    <Select>
+                      <SelectTrigger className="col-span-3">
+                        <SelectValue placeholder="Seleccione un tipo" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="lab">Laboratorio</SelectItem>
+                        <SelectItem value="common">Aula Común</SelectItem>
+                        <SelectItem value="auditorium">Auditorio</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button type="submit">Guardar Aula</Button>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </CardHeader>
         <CardContent>
