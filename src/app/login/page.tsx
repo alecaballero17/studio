@@ -26,7 +26,7 @@ export default function LoginPage() {
     if (auth) {
       try {
         await signInWithPopup(auth, provider);
-        router.push('/dashboard');
+        // La redirección se maneja en el useEffect
       } catch (error) {
         console.error("Error signing in with Google", error);
       }
